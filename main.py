@@ -71,4 +71,7 @@ async def on_message(message):
         await message.channel.send("Haaah... Hah... Haaah... Hooo...")
         await message.channel.send("glooogoboAOGOBIGOBOLGOOBOOLLOBGLOLOAOLLIBLIGGUGLGUBUULL")
         return
+    if message.content.startswith('night maro'):
+        await message.channel.send("cya nigga")
+        exit()
 client.run(secret_token.secret_token)
