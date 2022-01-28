@@ -2,6 +2,7 @@ import discord
 import secret_token
 import time
 import sqlite3
+import threading
 
 from random import randint
 from nltk.sentiment import SentimentIntensityAnalyzer
@@ -26,6 +27,11 @@ async def uh_oh_u_mad(message):
     random_index = randint(0, len(mad_responses)-1)
     await message.channel.send(mad_responses[random_index])
 
+async def respond_to_link(message):
+    for i in range(6):
+        #time.sleep(10)
+        await message.channel.send("<@!" + str(message.author.id) + '> you are a fucking retard stupid cow, post links in the right channel')
+
 @client.event
 async def on_ready():
     print('{0.user} has logged in'.format(client))
@@ -44,10 +50,8 @@ async def on_message(message):
     if sia.polarity_scores(message.content)['compound'] < -.5:
         await uh_oh_u_mad(message)
 
-    if (message.channel.name == 'epic-gamers') and ('http' in message.content) and not ('tenor.com' in message.content):
-        for i in range(6):
-            time.sleep(10)
-            await message.channel.send("<@!" + str(message.author.id) + '> you are a fucking retard stupid cow, post links in the right channel')
+    if ('http' in message.content) and not ('tenor.com' in message.content):
+        await respond_to_link(message)
 
     if message.content.startswith('maro hello'):
         await message.channel.send('Hello!')
