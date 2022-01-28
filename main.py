@@ -1,7 +1,16 @@
 import discord
 import secret_token
+from random import randint
+from nltk.sentiment import SentimentIntensityAnalyzer
 
 client = discord.Client()
+sia = SentimentIntensityAnalyzer()
+
+mad_responses = ["Relax, Okay?", "You Sound Upset Bro Chill Haha", "Uh Oh.... Is Somebody... Angwy? Does Little Baby Need Some Milk? Some Mommy Milk?"]
+
+async def uh_oh_u_mad(message):
+    random_index = randint(0, len(mad_responses)-1)
+    await message.channel.send(mad_responses[random_index])
 
 @client.event
 async def on_ready():
@@ -11,6 +20,9 @@ async def on_ready():
 async def on_message(message):
     if message.author == client.user:
         return
+
+    if sia.polarity_scores(message.content)['compound'] < -.5:
+        await uh_oh_u_mad(message)
 
     if message.content.startswith('maro hello'):
         await message.channel.send('Hello!')
